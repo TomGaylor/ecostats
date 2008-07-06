@@ -2,6 +2,7 @@
 #
 # (P) Sergiusz Pawlowicz 2008
 # (C) GPLv3
+# http://code.google.com/p/ecostats/
 #
 # grapefriut color manipulation module:
 # http://code.google.com/p/grapefruit/
@@ -9,6 +10,7 @@ import grapefruit
 #
 alphabet = 'abcdefghkmnopqrstuvwxyz'
 #
+# pairs are prepared by myself, so are maybe personal a little bit
 pairs=	[ 
 	["#66CCFF","#0066FF"], # a
 	["#99CC99","#336600"], # b
@@ -29,15 +31,8 @@ for pair in pairs:
 	color1 = grapefruit.Color.NewFromHtml(pair[0])
 	color2 = grapefruit.Color.NewFromHtml(pair[1])
 	for i in color1.Gradient(color2, 10):
-		print "td.state%s%s {" % (alphabet[letter] , str(number))
-		print " background: %s;" % i.html
-		print "}"
-		print "td.state%s%s a {" % (alphabet[letter] , str(number))
-		print "}"
 		print "p.state%s%s {" % (alphabet[letter] , str(number))
 		print " background: %s;" % i.html
-		print "}"
-		print "p.state%s%s a {" % (alphabet[letter] , str(number))
 		print "}"
 		number += 1
 	letter += 1
