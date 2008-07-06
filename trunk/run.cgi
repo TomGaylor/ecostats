@@ -116,7 +116,7 @@ for host in sorted(allhosts):
 			 for inout in [0,1]:
 			  try:
 				 data = getaverage ( host, process, uri, "-s now-1h", inout )
-				 uri = "/ecostat/i.cgi?hostname=%s;plugin=interface;type=if_octets;type_instance=%s;begin=-3600" % (host, process)
+				 uri = "/ecostats/i.cgi?hostname=%s;plugin=interface;type=if_octets;type_instance=%s;begin=-3600" % (host, process)
 				 #print "<p %s>" % setstate(float(data/100),100)
 				 print "<p %s>" % setstate(float(data/100),1)
 				 if inout == 0: print "&#187;"
@@ -137,7 +137,7 @@ for host in sorted(allhosts):
 			   for inout in [1,0]:
 				try:
 				 data = getaverage ( host, process+"-"+drive, uri, "-s now-1h", inout )
-				 uri = "/ecostat/i.cgi?hostname=%s;plugin=disk;plugin_instance=%s;type=disk_octets;begin=-3600" % (host,drive)
+				 uri = "/ecostats/i.cgi?hostname=%s;plugin=disk;plugin_instance=%s;type=disk_octets;begin=-3600" % (host,drive)
 				 print "<p %s>" % setstate(float(data/100),100)
 				 if inout == 1: print "&#187;"
 				 else: print "&#171;"
