@@ -86,6 +86,8 @@ print "<td class='livehead'>sdd<br>kbit/s</td>"
 #print "<td class='head'>apache<br>req/s</td>"
 #print "<td class='head'>apache<br>kbit/s</td>"
 print "</tr>"
+# grapwidth
+graphwidth="920"
 for host in sorted(allhosts):
 #for host in ['nolapp111']:
 	# get hostname without domain
@@ -101,10 +103,10 @@ for host in sorted(allhosts):
 			try:
 				# ('shortterm', 'midterm', 'longterm')
 				data = getaverage ( host, process, uri, "-s now-1h", 0 )
-				uri = "/ecostats/i.cgi?hostname=%s;plugin=load;type=load;begin=-3600" % host
+				uri = "/ecostats/i.cgi?hostname=%s;plugin=load;type=load;begin=-3600&width=%s" % ( host, graphwidth )
 				print "<p %s>" % setstate(float(data*100),1)
 				print '<a href="%s" class="jTip"' % uri
-				print ' id="%s" name="%s" width="500">' % (hostname,hostname)
+				print ' id="%s" name="%s">' % (hostname,hostname)
 				print "%5.2f</a></p>" % data
 			except: print "<p class='livehead'>&nbsp;</p>"
 			print "</td>"
@@ -116,7 +118,7 @@ for host in sorted(allhosts):
 			 for inout in [0,1]:
 			  try:
 				 data = getaverage ( host, process, uri, "-s now-1h", inout )
-				 uri = "/ecostats/i.cgi?hostname=%s;plugin=interface;type=if_octets;type_instance=%s;begin=-3600" % (host, process)
+				 uri = "/ecostats/i.cgi?hostname=%s;plugin=interface;type=if_octets;type_instance=%s;begin=-3600&width=%s" % (host, process, graphwidth)
 				 #print "<p %s>" % setstate(float(data/100),100)
 				 print "<p %s>" % setstate(float(data/100),1)
 				 if inout == 0: print "&#187;"
@@ -137,13 +139,13 @@ for host in sorted(allhosts):
 			   for inout in [1,0]:
 				try:
 				 data = getaverage ( host, process+"-"+drive, uri, "-s now-1h", inout )
-				 uri = "/ecostats/i.cgi?hostname=%s;plugin=disk;plugin_instance=%s;type=disk_octets;begin=-3600" % (host,drive)
+				 uri = "/ecostats/i.cgi?hostname=%s;plugin=disk;plugin_instance=%s;type=disk_octets;begin=-3600&width=%s" % (host,drive, graphwidth )
 				 print "<p %s>" % setstate(float(data/100),100)
 				 if inout == 1: print "&#187;"
 				 else: print "&#171;"
 				 print '<a href="%s" class="jTip"' % uri
 				 print ' id="%s" name="%s" width="500">' % (hostname,hostname)
-				 print "%5.2f</p>" % float(8*(data/1000)) # we want kbit/s
+				 print "%5.2f</a></p>" % float(8*(data/1000)) # we want kbit/s
 				except: print "<p class='livehead'>-</p>"
 			  except: print "<p class='livehead'>&nbsp;</p>"
 			  print "</td>"
