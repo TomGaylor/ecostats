@@ -6,4 +6,4 @@ EcoStats - alpha stage.
 = Details =
 
 You can see current demo version on:
-  * http://pawlowicz.name/EcoStats
+  * http://pawlowicz.name/MyServers
