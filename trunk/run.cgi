@@ -104,14 +104,19 @@ for host in sorted(allhosts):
 		 if process == 'load':
 			print "<td>"
 			try:
+			 for inout in [0,2]:
+			  try:
 				# ('shortterm', 'midterm', 'longterm')
-				data = getaverage ( host, process, uri, "-s now-1h", 0 )
-				uri = "/ecostats/i.cgi?hostname=%s;plugin=load;type=load;begin=-3600&width=%s" % ( host, graphwidth )
+				data = getaverage ( host, process, uri, "-s now-1h", inout )
+				if inout == 0: graphtime = "5000"
+                                else: graphtime = "100000"
+				uri = "/ecostats/i.cgi?hostname=%s;plugin=load;type=load;begin=-%s&width=%s" % ( host, graphtime, graphwidth )
 				print "<p %s>" % setstate(float(data*100),1)
 				#print '<a href="%s" id="%s" rel="%s" class="jTip">' % (uri,process,uri)
 				#print '<a href="%s" rel="%s" class="jTip">' % (uri,uri)
 				print '<a href="%s" id="%s" name="%s" class="jTip">' % (uri,host,host)
 				print "%5.2f</a></p>" % data
+			  except: print "<p class='livehead'>&nbsp;</p>"
 			except: print "<p class='livehead'>&nbsp;</p>"
 			print "</td>"
 		 elif process == 'eth0' or process == 'eth1':
@@ -121,8 +126,11 @@ for host in sorted(allhosts):
 			try:
 			 for inout in [0,1]:
 			  try:
-				 data = getaverage ( host, process, uri, "-s now-1h", inout )
-				 uri = "/ecostats/i.cgi?hostname=%s;plugin=interface;type=if_octets;type_instance=%s;begin=-3600&width=%s" % (host, process, graphwidth)
+				 graphtime = "-s now-1h"
+				 data = getaverage ( host, process, uri, graphtime, inout )
+				 if inout == 0: graphtime = "5000"
+				 else: graphtime = "100000"
+ 				 uri = "/ecostats/i.cgi?hostname=%s;plugin=interface;type=if_octets;type_instance=%s;begin=-%s&width=%s" % (host, process, graphtime, graphwidth)
 				 #print "<p %s>" % setstate(float(data/100),100)
 				 print "<p %s>" % setstate(float(data/100),1)
 				 if inout == 0: print "&#187;"
@@ -143,7 +151,9 @@ for host in sorted(allhosts):
 			   for inout in [1,0]:
 				try:
 				 data = getaverage ( host, process+"-"+drive, uri, "-s now-1h", inout )
-				 uri = "/ecostats/i.cgi?hostname=%s;plugin=disk;plugin_instance=%s;type=disk_octets;begin=-3600&width=%s" % (host,drive, graphwidth )
+				 if inout == 1: graphtime = "5000"
+				 else: graphtime = "100000"
+				 uri = "/ecostats/i.cgi?hostname=%s;plugin=disk;plugin_instance=%s;type=disk_octets;begin=-%s&width=%s" % (host,drive, graphtime, graphwidth )
 				 print "<p %s>" % setstate(float(data/100),100)
 				 if inout == 1: print "&#187;"
 				 else: print "&#171;"
