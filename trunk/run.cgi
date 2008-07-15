@@ -5,6 +5,9 @@
 # (C) GPLv3
 # http://code.google.com/p/ecostats/
 #
+#
+print "Content-Type: text/html; charset=utf-8"
+print ""
 
 #
 import os, rrdtool, operator, re, sys
@@ -105,8 +108,9 @@ for host in sorted(allhosts):
 				data = getaverage ( host, process, uri, "-s now-1h", 0 )
 				uri = "/ecostats/i.cgi?hostname=%s;plugin=load;type=load;begin=-3600&width=%s" % ( host, graphwidth )
 				print "<p %s>" % setstate(float(data*100),1)
-				print '<a href="%s" class="jTip"' % uri
-				print ' id="%s" name="%s">' % (hostname,hostname)
+				#print '<a href="%s" id="%s" rel="%s" class="jTip">' % (uri,process,uri)
+				#print '<a href="%s" rel="%s" class="jTip">' % (uri,uri)
+				print '<a href="%s" id="%s" name="%s" class="jTip">' % (uri,host,host)
 				print "%5.2f</a></p>" % data
 			except: print "<p class='livehead'>&nbsp;</p>"
 			print "</td>"
