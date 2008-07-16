@@ -166,9 +166,9 @@ for host in sorted(allhosts):
 				 print ' id="%s" name="%s" width="500">' % (hostname,hostname)
 				 print "%5.2f</a></p>" % float(8*(data/1000)) # we want kbit/s
 				except: print "<p class='livehead'>-</p>"
-			  except: print "<p class='livehead'>&nbsp;</p>"
+			  except: print "<p class='livehead'>-</p>"
 			  print "</td>"
-			except: print "<td class='livehead'>&nbsp;</td>"
+			except: print "<td class='livehead'>-</td>"
 
 		 # mysql
 		 elif process == 'mysql_octets':
@@ -185,9 +185,9 @@ for host in sorted(allhosts):
 				if inout == 0: print "&#187;"
 				else: print "&#171;"
 				print '<a href="%s" id="%s" name="%s" class="jTip">' % (uri,host,host)
-				print "%5.2f</a></p>" % float(8*(data/1000))
-			  except: print "<p class='livehead'>&nbsp;</p>"
-			except: print "<p class='livehead'>&nbsp;</p>"
+				print "%5.2f</a></p>" % float(8*(data/1000)) # we want kbit/s
+			  except: print "<p class='livehead'>-</p>"
+			except: print "<p class='livehead'>-</p>"
 			print "</td>"
 
 		 elif process == 'apache_requests':
