@@ -59,6 +59,8 @@ def getaverage ( host , process , uri , time, value ):
 		info = rrdtool.fetch(rrdbase+host+"/apache/apache_requests.rrd", "AVERAGE", "%s" % time )
 	elif process == 'apache_bytes':
 		info = rrdtool.fetch(rrdbase+host+"/apache/apache_bytes.rrd", "AVERAGE", "%s" % time )
+	elif process == 'mysql_octets':
+		info = rrdtool.fetch(rrdbase+host+"/mysql/mysql_octets.rrd", "AVERAGE", "%s" % time )
 	values = []
 	for x in info:
 		for y in x:
@@ -88,6 +90,7 @@ print "<td class='livehead'>sdc<br>kbit/s</td>"
 print "<td class='livehead'>sdd<br>kbit/s</td>"
 #print "<td class='head'>apache<br>req/s</td>"
 #print "<td class='head'>apache<br>kbit/s</td>"
+print "<td class='livehead'>mysql<br>kbit/s</td>"
 print "</tr>"
 # grapwidth
 graphwidth="920"
@@ -99,8 +102,10 @@ for host in sorted(allhosts):
 	print "<tr><td class='livehead'>%s</td>" % hostname
 	# for each selected plugin do
 	#for process in ['load', 'eth0', 'eth1', 'disk_octets', 'apache_requests', 'apache_bytes']:
-	for process in ['load', 'eth0', 'eth1', 'disk_octets']:
-		try:
+	for process in ['load', 'eth0', 'eth1', 'disk_octets', 'mysql_octets']:
+	#for process in ['load', 'eth0', 'eth1', 'disk_octets']:
+#		try:
+		if "a" == "a":
 		 if process == 'load':
 			print "<td>"
 			try:
@@ -164,6 +169,27 @@ for host in sorted(allhosts):
 			  except: print "<p class='livehead'>&nbsp;</p>"
 			  print "</td>"
 			except: print "<td class='livehead'>&nbsp;</td>"
+
+		 # mysql
+		 elif process == 'mysql_octets':
+			print "<td>"
+			try:
+			 for inout in [0,1]:
+			  try:
+				# ('tx', 'rx')
+				data = getaverage ( host, process, uri, "-s now-1h", inout )
+				if inout == 0: graphtime = "5000"
+                                else: graphtime = "100000"
+				uri = "/ecostats/i.cgi?hostname=%s;plugin=mysql;type=mysql_octets;begin=-%s&width=%s" % ( host, graphtime, graphwidth )
+				print "<p %s>" % setstate(float(data/100),100)
+				if inout == 0: print "&#187;"
+				else: print "&#171;"
+				print '<a href="%s" id="%s" name="%s" class="jTip">' % (uri,host,host)
+				print "%5.2f</a></p>" % float(8*(data/1000))
+			  except: print "<p class='livehead'>&nbsp;</p>"
+			except: print "<p class='livehead'>&nbsp;</p>"
+			print "</td>"
+
 		 elif process == 'apache_requests':
 			try:
 				data = getaverage ( host, process, uri, "-s now-1h", 0 )
@@ -174,8 +200,8 @@ for host in sorted(allhosts):
 				data = getaverage ( host, process, uri, "-s now-1h", 0 )
 				print "<td %s>%5.2f</td>" % (setstate(float(data/100),100), float(data/100))
 			except:	print "<td class='livehead'>&nbsp;</td>"
-		except:
-			print "<td class='livehead'>+</td>"
+#		except:
+#			print "<td class='livehead'>+</td>"
 	print "</tr>"
 	#sys.exit()
 print "</table>"
